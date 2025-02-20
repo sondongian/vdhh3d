@@ -1,10 +1,13 @@
+// Lấy dữ liệu từ LocalStorage hoặc tạo danh sách mới nếu chưa có
 let questions = JSON.parse(localStorage.getItem('questions')) || [];
 
+// Hiển thị danh sách câu hỏi trong bảng
 function displayQuestions() {
     let list = document.getElementById('questionList');
     if (!list) return;
 
-    list.innerHTML = "";
+    list.innerHTML = ""; // Xóa dữ liệu cũ trước khi render lại
+
     questions.forEach((q, index) => {
         list.innerHTML += `
             <tr>
@@ -16,11 +19,15 @@ function displayQuestions() {
                 </td>
             </tr>`;
     });
+
+    // Cập nhật dữ liệu trong LocalStorage
+    localStorage.setItem('questions', JSON.stringify(questions));
 }
 
+// Thêm câu hỏi mới vào danh sách
 function addQuestion() {
-    let question = document.getElementById('questionInput').value;
-    let answer = document.getElementById('answerInput').value;
+    let question = document.getElementById('questionInput').value.trim();
+    let answer = document.getElementById('answerInput').value.trim();
 
     if (question && answer) {
         questions.push({ question, answer });
@@ -34,6 +41,7 @@ function addQuestion() {
     }
 }
 
+// Xóa câu hỏi
 function deleteQuestion(index) {
     if (confirm("❌ Bạn có chắc chắn muốn xóa câu hỏi này?")) {
         questions.splice(index, 1);
@@ -42,6 +50,7 @@ function deleteQuestion(index) {
     }
 }
 
+// Chỉnh sửa câu hỏi
 function editQuestion(index) {
     let newQuestion = prompt("📝 Nhập câu hỏi mới:", questions[index].question);
     let newAnswer = prompt("🔍 Nhập đáp án mới:", questions[index].answer);
@@ -54,5 +63,5 @@ function editQuestion(index) {
     }
 }
 
-// Tải dữ liệu khi trang được mở
+// Gọi hàm hiển thị khi trang được tải
 window.onload = displayQuestions;
