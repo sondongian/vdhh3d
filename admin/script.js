@@ -1,6 +1,5 @@
 let questions = JSON.parse(localStorage.getItem('questions')) || [];
 
-// Hiển thị câu hỏi
 function displayQuestions() {
     let table = document.getElementById('questionTable');
     table.innerHTML = "";
@@ -14,15 +13,13 @@ function displayQuestions() {
         cell1.textContent = q.question;
         cell2.innerHTML = `<span class="answer">${q.answer}</span>`;
         cell3.innerHTML = `
-            <button onclick="editQuestion(${index})">Sửa</button>
-            <button class="delete" onclick="deleteQuestion(${index})">Xóa</button>
+            <button onclick="deleteQuestion(${index})">Xóa</button>
         `;
     });
 
     localStorage.setItem('questions', JSON.stringify(questions));
 }
 
-// Thêm câu hỏi
 function addQuestion() {
     let question = document.getElementById('questionInput').value;
     let answer = document.getElementById('answerInput').value;
@@ -38,7 +35,6 @@ function addQuestion() {
     }
 }
 
-// Xóa câu hỏi
 function deleteQuestion(index) {
     if (confirm("Bạn có chắc chắn muốn xóa?")) {
         questions.splice(index, 1);
@@ -46,10 +42,9 @@ function deleteQuestion(index) {
     }
 }
 
-// Lưu dữ liệu
 function saveData() {
     localStorage.setItem('questions', JSON.stringify(questions));
-    alert("Dữ liệu đã lưu!");
+    alert("✅ Dữ liệu đã được lưu thành công!");
 }
 
 window.onload = displayQuestions;
