@@ -9,12 +9,27 @@
 <body>
 
     <script>
-        // Bảo vệ trang bằng mật khẩu
-        let password = prompt("🔐 Vui lòng nhập mật khẩu để truy cập:");
-        if (password !== "thanhson1") {
-            alert("❌ Sai mật khẩu! Quay lại trang chính.");
-            window.location.href = "/";
+        // Hàm mã hóa SHA-256
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
+
+        // Kiểm tra mật khẩu
+        (async () => {
+            const inputPass = prompt("🔐 Vui lòng nhập mật khẩu:");
+            const hashedInput = await hashPassword(inputPass);
+            
+            // Mã SHA-256 của mật khẩu "admin123"
+            const correctHash = "5994471abb01112afcc18159f6cc74b4f511b998064a0646b081fcf9f6c54b6c"; 
+
+            if (hashedInput !== correctHash) {
+                alert("❌ Sai mật khẩu! Quay lại trang chính.");
+                window.location.href = "/";
+            }
+        })();
     </script>
 
     <h1>➕ Thêm câu hỏi mới</h1>
