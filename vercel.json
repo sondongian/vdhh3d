@@ -1,5 +1,5 @@
 {
   "redirects": [
-    { "source": "/", "destination": "/vdtm/user", "permanent": true }
+    { "source": "/", "destination": "/user", "permanent": true }
   ]
 }
