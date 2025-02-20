@@ -10,7 +10,7 @@ function displayQuestions() {
             <tr>
                 <td>${q.question}</td>
                 <td class="answer">${q.answer}</td>
-                ${window.location.pathname.includes("admincangcot.html") ? 
+                ${window.location.pathname.includes("admin.html") ? 
                 `<td><button class="delete-btn" onclick="deleteQuestion(${index})">Xóa</button></td>` 
                 : ""}
             </tr>`;
