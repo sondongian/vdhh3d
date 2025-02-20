@@ -1,65 +1,67 @@
-// Lấy dữ liệu từ LocalStorage hoặc tạo danh sách mới nếu chưa có
-let questions = JSON.parse(localStorage.getItem('questions')) || [];
+// Cấu hình Firebase
+const firebaseConfig = {
+    apiKey: "heSPbSU75-DMv1FEpVZ9J-auT0AUm93s971hACjo0AI",
+    authDomain: "https://vdhh3dd-default-rtdb.firebaseio.com/",
+    databaseURL: "https://vdhh3dd-default-rtdb.firebaseio.com/"
+};
+firebase.initializeApp(firebaseConfig);
 
-// Hiển thị danh sách câu hỏi trong bảng
-function displayQuestions() {
-    let list = document.getElementById('questionList');
-    if (!list) return;
+const db = firebase.database().ref("questions");
 
-    list.innerHTML = ""; // Xóa dữ liệu cũ trước khi render lại
-
-    questions.forEach((q, index) => {
-        list.innerHTML += `
-            <tr>
-                <td>${q.question}</td>
-                <td>${q.answer}</td>
-                <td>
-                    <button class="edit-btn" onclick="editQuestion(${index})">✏️ Sửa</button>
-                    <button class="delete-btn" onclick="deleteQuestion(${index})">🗑️ Xóa</button>
-                </td>
-            </tr>`;
-    });
-
-    // Cập nhật dữ liệu trong LocalStorage
-    localStorage.setItem('questions', JSON.stringify(questions));
-}
-
-// Thêm câu hỏi mới vào danh sách
+// Thêm câu hỏi vào Firebase
 function addQuestion() {
     let question = document.getElementById('questionInput').value.trim();
     let answer = document.getElementById('answerInput').value.trim();
 
     if (question && answer) {
-        questions.push({ question, answer });
-        localStorage.setItem('questions', JSON.stringify(questions));
-        document.getElementById('questionInput').value = "";
-        document.getElementById('answerInput').value = "";
-        alert("✅ Câu hỏi đã được thêm!");
-        displayQuestions();
+        db.push({ question, answer }).then(() => {
+            alert("✅ Câu hỏi đã được thêm!");
+            document.getElementById('questionInput').value = "";
+            document.getElementById('answerInput').value = "";
+        }).catch(error => alert("❌ Lỗi khi thêm câu hỏi: " + error));
     } else {
         alert("❌ Vui lòng nhập đầy đủ thông tin.");
     }
 }
 
-// Xóa câu hỏi
-function deleteQuestion(index) {
+// Hiển thị câu hỏi từ Firebase
+function displayQuestions() {
+    db.on("value", (snapshot) => {
+        let list = document.getElementById('questionList');
+        list.innerHTML = "";
+        snapshot.forEach((child) => {
+            let data = child.val();
+            list.innerHTML += `
+                <tr>
+                    <td>${data.question}</td>
+                    <td>${data.answer}</td>
+                    <td>
+                        <button class="edit-btn" onclick="editQuestion('${child.key}', '${data.question}', '${data.answer}')">✏️ Sửa</button>
+                        <button class="delete-btn" onclick="deleteQuestion('${child.key}')">🗑️ Xóa</button>
+                    </td>
+                </tr>`;
+        });
+    });
+}
+
+// Xóa câu hỏi khỏi Firebase
+function deleteQuestion(id) {
     if (confirm("❌ Bạn có chắc chắn muốn xóa câu hỏi này?")) {
-        questions.splice(index, 1);
-        localStorage.setItem('questions', JSON.stringify(questions));
-        displayQuestions();
+        db.child(id).remove().then(() => {
+            alert("✅ Câu hỏi đã bị xóa!");
+        }).catch(error => alert("❌ Lỗi khi xóa câu hỏi: " + error));
     }
 }
 
-// Chỉnh sửa câu hỏi
-function editQuestion(index) {
-    let newQuestion = prompt("📝 Nhập câu hỏi mới:", questions[index].question);
-    let newAnswer = prompt("🔍 Nhập đáp án mới:", questions[index].answer);
-    
+// Chỉnh sửa câu hỏi trong Firebase
+function editQuestion(id, oldQuestion, oldAnswer) {
+    let newQuestion = prompt("📝 Nhập câu hỏi mới:", oldQuestion);
+    let newAnswer = prompt("🔍 Nhập đáp án mới:", oldAnswer);
+
     if (newQuestion !== null && newAnswer !== null) {
-        questions[index].question = newQuestion;
-        questions[index].answer = newAnswer;
-        localStorage.setItem('questions', JSON.stringify(questions));
-        displayQuestions();
+        db.child(id).update({ question: newQuestion, answer: newAnswer }).then(() => {
+            alert("✅ Câu hỏi đã được cập nhật!");
+        }).catch(error => alert("❌ Lỗi khi cập nhật: " + error));
     }
 }
 
