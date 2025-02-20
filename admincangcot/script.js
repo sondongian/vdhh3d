@@ -12,7 +12,7 @@ function displayQuestions() {
         list.innerHTML += `
             <tr>
                 <td>${q.question}</td>
-                <td class="answer">${q.answer}</td>
+                <td>${q.answer}</td>
                 <td>
                     <button class="edit-btn" onclick="editQuestion(${index})">✏️ Sửa</button>
                     <button class="delete-btn" onclick="deleteQuestion(${index})">🗑️ Xóa</button>
