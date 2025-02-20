@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Quản lý câu hỏi</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <h1>➕ Thêm câu hỏi mới</h1>
-    <input type="text" id="questionInput" placeholder="Nhập câu hỏi">
-    <input type="text" id="answerInput" placeholder="Nhập đáp án">
-    <button onclick="addQuestion()">Thêm câu hỏi</button>
+    <div class="input-container">
+        <input type="text" id="questionInput" placeholder="Nhập câu hỏi">
+        <input type="text" id="answerInput" placeholder="Nhập đáp án">
+        <button onclick="addQuestion()">Thêm câu hỏi</button>
+    </div>
 
     <h2>📋 Danh sách câu hỏi</h2>
     <table>
@@ -22,9 +24,11 @@
                 <th>Hành động</th>
             </tr>
         </thead>
-        <tbody id="questionList"></tbody>
+        <tbody id="questionList">
+            <!-- Câu hỏi sẽ hiển thị tại đây -->
+        </tbody>
     </table>
 
-    <script src="../script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
