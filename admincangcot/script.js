@@ -10,9 +10,10 @@ function displayQuestions() {
             <tr>
                 <td>${q.question}</td>
                 <td class="answer">${q.answer}</td>
-                ${window.location.pathname.includes("admincangcot.html") ? 
-                `<td><button class="delete-btn" onclick="deleteQuestion(${index})">Xóa</button></td>` 
-                : ""}
+                <td>
+                    <button class="edit-btn" onclick="editQuestion(${index})">✏️ Sửa</button>
+                    <button class="delete-btn" onclick="deleteQuestion(${index})">🗑️ Xóa</button>
+                </td>
             </tr>`;
     });
 }
@@ -34,27 +35,24 @@ function addQuestion() {
 }
 
 function deleteQuestion(index) {
-    if (confirm("Bạn có chắc chắn muốn xóa?")) {
+    if (confirm("❌ Bạn có chắc chắn muốn xóa câu hỏi này?")) {
         questions.splice(index, 1);
         localStorage.setItem('questions', JSON.stringify(questions));
         displayQuestions();
     }
 }
 
-function searchQuestion() {
-    let keyword = document.getElementById('search').value.toLowerCase();
-    let list = document.getElementById('questionList');
-    list.innerHTML = "";
-
-    questions.forEach((q) => {
-        if (q.question.toLowerCase().includes(keyword)) {
-            list.innerHTML += `
-                <tr>
-                    <td>${q.question}</td>
-                    <td class="answer">${q.answer}</td>
-                </tr>`;
-        }
-    });
+function editQuestion(index) {
+    let newQuestion = prompt("📝 Nhập câu hỏi mới:", questions[index].question);
+    let newAnswer = prompt("🔍 Nhập đáp án mới:", questions[index].answer);
+    
+    if (newQuestion !== null && newAnswer !== null) {
+        questions[index].question = newQuestion;
+        questions[index].answer = newAnswer;
+        localStorage.setItem('questions', JSON.stringify(questions));
+        displayQuestions();
+    }
 }
 
+// Tải dữ liệu khi trang được mở
 window.onload = displayQuestions;
