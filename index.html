@@ -2,10 +2,52 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; URL=/user/">
-    <title>Chuyển hướng...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chọn giao diện</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f4f4f4;
+        }
+        .button-container {
+            margin-top: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 18px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .user-btn {
+            background-color: #42a5f5;
+        }
+        .user-btn:hover {
+            background-color: #1e88e5;
+        }
+        .admin-btn {
+            background-color: #ff9800;
+        }
+        .admin-btn:hover {
+            background-color: #e68900;
+        }
+    </style>
 </head>
 <body>
-    <p>Đang chuyển hướng đến trang tìm kiếm câu hỏi...</p>
+
+    <h1>Chào mừng bạn đến với Hệ thống Quiz</h1>
+    <p>Chọn giao diện bạn muốn truy cập:</p>
+
+    <div class="button-container">
+        <a href="/user/" class="button user-btn">Vào trang Khách</a>
+        <a href="/admin/" class="button admin-btn">Vào trang Admin</a>
+    </div>
+
 </body>
 </html>
